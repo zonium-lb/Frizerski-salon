@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="hr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ATELIER MONO — Frizerski salon (DEMO)</title>
+    <meta
+      name="description"
+      content="Minimalistički frizerski studio. Precizan rez, čisti tonovi i pametna njega kose."
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Cormorant+Garamond:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <!-- Font Awesome (icons) -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #f6f7fb;
+        --ink: #111;
+        --muted: #6b7280;
+        --line: rgba(0, 0, 0, 0.08);
+        --accent: #d9b9b0;
+        --accent-ink: #241f1e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 400 16px/1.7 "Plus Jakarta Sans", system-ui, -apple-system,
+          Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        overflow-x: hidden;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* Sidebar (desktop) */
+      .side {
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        border-right: 1px solid var(--line);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        padding: 22px;
+        background: #fff;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* Sidebar nav (pun širine, bez Bootstrap kolizije) */
+      .sidenav {
+        display: grid;
+        gap: 6px;
+        align-content: start;
+        margin-top: 18px;
+      }
+      .sidenav a {
+        display: block;
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        color: #2b313c;
+        line-height: 1.35;
+      }
+      .sidenav a:hover,
+      .sidenav a:focus-visible,
+      .sidenav a.active {
+        background: rgba(0, 0, 0, 0.06);
+        text-decoration: none;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-top: 12px;
+      }
+      .cta {
+        display: block;
+        width: 100%;
+        margin-top: 12px;
+        text-align: center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--accent);
+        color: var(--accent-ink);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .bar {
+        display: none;
+      }
+
+      /* Mobile top bar */
+      @media (max-width: 991.98px) {
+        .bar {
+          display: flex;
+          position: sticky;
+          top: 0;
+          z-index: 1040;
+          gap: 10px;
+          align-items: center;
+          justify-content: space-between;
+          padding: 10px 12px;
+          background: #fff;
+          border-bottom: 1px solid var(--line);
+        }
+      }
+
+      /* Sections */
+      section {
+        padding: 80px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .section-alt {
+        background: #f2edea;
+      }
+      .head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .h2 {
+        font: 700 clamp(1.3rem, 1.1rem + 1.2vw, 2.2rem) / 1.15
+            "Plus Jakarta Sans",
+          sans-serif;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .line {
+        height: 1px;
+        background: var(--line);
+        margin: 10px 0;
+      }
+
+      /* Hero */
+      .hero {
+        position: relative;
+        min-height: 92vh;
+        display: grid;
+        align-items: end;
+        overflow: hidden;
+        background: #fff;
+      }
+      .hero video {
+        position: absolute;
+        inset: 0;
+        width: 133%;
+        height: 133%;
+        object-fit: cover;
+        filter: saturate(1.02) contrast(1.02) brightness(0.95);
+        top: -125px;
+      }
+      .hero:after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            180deg,
+            rgb(255 255 255 / 14%),
+            rgb(246 247 251 / 75%) 78%
+          ),
+          linear-gradient(0deg, rgb(255 255 255 / 56%), #00000000 80%);
+      }
+      .hero__inner {
+        position: relative;
+        z-index: 1;
+        padding: 18svh 7vw 10svh;
+        display: grid;
+        gap: 12px;
+      }
+      .eyebrow {
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+      }
+      .title {
+        font: 600 clamp(2.2rem, 1.8rem + 3.6vw, 4.6rem) / 1.05
+            "Cormorant Garamond",
+          serif;
+        letter-spacing: 0.2px;
+        max-width: 22ch;
+      }
+      .lead {
+        max-width: 70ch;
+        color: #384152;
+      }
+      .hero-cta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+      .btn--light {
+        background: #111;
+        color: #fff;
+        border: 1px solid var(--line);
+      }
+      .btn--ghost {
+        background: #fff;
+        color: #111;
+        border: 1px solid var(--line);
+      }
+      .btn--accent {
+        background: var(--accent);
+        color: var(--accent-ink);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      /* Lists */
+      .list {
+        display: grid;
+        gap: 10px;
+      }
+      .rowx {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 10px 0;
+        border-bottom: 1px dashed var(--line);
+      }
+      .rowx:last-child {
+        border-bottom: 0;
+      }
+      .pill {
+        padding: 0.25rem 0.6rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        font-size: 0.85rem;
+      }
+
+      /* Lookbook */
+      .ph {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid var(--line);
+      }
+      .ph img {
+        width: 100%;
+        height: 420px;
+        object-fit: cover;
+        display: block;
+        filter: grayscale(0.7);
+        transition: 0.5s;
+      }
+      .ph:hover img {
+        filter: none;
+        transform: scale(1.02);
+      }
+      .cap {
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: saturate(1.2) blur(6px);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.35rem 0.7rem;
+        font-size: 0.9rem;
+      }
+
+      /* Reveal */
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .js .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Animations */
+      @keyframes floatUp {
+        0% {
+          transform: translateY(6px);
+        }
+        100% {
+          transform: translateY(-6px);
+        }
+      }
+      .anim-float {
+        animation: floatUp 6s ease-in-out infinite alternate;
+      }
+      .hover-lift {
+        transition: transform 0.35s ease, box-shadow 0.35s ease;
+      }
+      .hover-lift:hover {
+        transform: translateY(-4px);
+      }
+
+      /* Horizontal strip */
+      .strip {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 4px;
+        scroll-snap-type: x mandatory;
+      }
+      .strip img {
+        height: 220px;
+        width: auto;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #fff;
+        scroll-snap-align: center;
+      }
+
+      /* Floating WhatsApp */
+      .fab {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 1090;
+      }
+      .fab a {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+        transition: transform 0.2s ease;
+      }
+      .fab a:hover {
+        transform: translateY(-2px);
+      }
+      .fab .wa {
+        background: #25d366;
+      }
+
+      /* Mobile tweaks */
+      @media (max-width: 740px) {
+        .hero {
+          min-height: 72svh;
+        }
+        .hero__inner {
+          padding: 14svh 0 10svh;
+        }
+      }
+      @media (max-width: 560px) {
+        .hero__inner {
+          padding: 12svh 0 8svh;
+        }
+        .title {
+          font: 600 clamp(1.9rem, 1.6rem + 5vw, 3.2rem) / 1.05
+              "Cormorant Garamond",
+            serif;
+        }
+        .ph img {
+          height: auto;
+          aspect-ratio: 3/4;
+        }
+      }
+
+      .devby {
+        background: #111;
+        color: #666;
+        text-align: center;
+        padding: 12px;
+        font-size: 0.9rem;
+      }
+
+      .devby a {
+        color: #888;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .devby a:hover {
+        color: var(--accent);
+      }
+    </style>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+  </head>
+  <body>
+    <!-- Mobile bar -->
+    <div class="bar navbar bg-white border-bottom d-lg-none">
+      <button
+        class="btn btn-outline-secondary ms-1"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasNav"
+        aria-controls="offcanvasNav"
+        aria-label="Otvori izbornik"
+      >
+        ☰
+      </button>
+      <div class="brand"><span class="dot"></span> ATELIER MONO</div>
+      <!-- TEL link umjesto rezervacije -->
+      <a class="cta ms-auto me-1" href="tel:+385910000000"
+        ><i class="fa-solid fa-phone"></i>&nbsp; Nazovi</a
+      >
+    </div>
+
+    <!-- Offcanvas nav (mobile) -->
+    <div
+      class="offcanvas offcanvas-top"
+      tabindex="-1"
+      id="offcanvasNav"
+      aria-labelledby="offcanvasNavLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavLabel">Navigacija</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Zatvori"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="list-group list-group-flush">
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#usluge"
+            >Usluge</a
+          >
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#lookbook"
+            >Lookbook</a
+          >
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#tim"
+            >Tim</a
+          >
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#blog"
+            >Savjeti & Novosti</a
+          >
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#recenzije"
+            >Recenzije</a
+          >
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#faq"
+            >FAQ</a
+          >
+          <a
+            class="list-group-item list-group-item-action"
+            data-bs-dismiss="offcanvas"
+            href="#kontakt"
+            >Kontakt</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row g-0">
+        <!-- SIDEBAR -->
+        <aside class="col-lg-2 d-none d-lg-grid side">
+          <div>
+            <a class="brand" href="#pocetak"
+              ><img src="logo.png" style="height: 140px; width: auto"
+            /></a>
+            <nav class="sidenav mt-3" aria-label="Primarna navigacija">
+              <a href="#usluge">Usluge</a>
+              <a href="#lookbook">Lookbook</a>
+              <a href="#tim">Tim</a>
+              <a href="#blog">Savjeti & Novosti</a>
+              <a href="#recenzije">Recenzije</a>
+              <a href="#faq">FAQ</a>
+              <a href="#kontakt">Kontakt</a>
+            </nav>
+          </div>
+          <div></div>
+          <div>
+            <div class="meta">
+              📍 Masarykova 7, Zagreb<br />⏰ Pon–Pet 09–20 · Sub 09–15
+            </div>
+            <!-- TEL link umjesto rezervacije -->
+            <a class="cta" href="tel:+385910000000"
+              ><i class="fa-solid fa-phone"></i>&nbsp; Nazovi</a
+            >
+            <small>+385 91 000 0000 · hello@mono.hr</small>
+          </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="col-12 col-lg-10">
+          <!-- HERO -->
+          <header id="pocetak" class="hero">
+            <video class="ken" autoplay muted loop playsinline>
+              <source src="Untitled.mp4" type="video/mp4" />
+            </video>
+            <div class="hero__inner container-xxl">
+              <span class="eyebrow">Frizerski studio</span>
+              <h1 class="title">Precizan rez. Čisti ton. Njega bez viška.</h1>
+              <p class="lead">
+                Radimo frizure koje traju — uz pažnju prema vlasištu, poroznosti
+                i teksturi tvoje kose.
+              </p>
+              <div class="hero-cta">
+                <!-- TEL link -->
+                <a class="btn--light px-3 py-2" href="tel:+385910000000"
+                  ><i class="fa-solid fa-phone"></i>&nbsp; Nazovi</a
+                >
+                <a class="btn--ghost px-3 py-2" href="#blog"
+                  >Pročitaj savjete</a
+                >
+              </div>
+            </div>
+          </header>
+
+          <!-- USLUGE + PAKETI -->
+          <section id="usluge" class="reveal section-alt">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Usluge</div>
+                  <h2 class="h2">Rez • Boja • Obnova vlakna</h2>
+                </div>
+                <a class="muted" href="#blog">Njega kose →</a>
+              </div>
+
+              <div class="row g-3 g-md-4">
+                <div class="col-md-7">
+                  <h3 class="mb-2">Rez & stil</h3>
+                  <div class="list">
+                    <div class="rowx">
+                      <span>Precision Cut (kratko/srednje)</span
+                      ><span><span class="pill">45–60 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Long Shape & Finish</span
+                      ><span><span class="pill">60–75 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Dry Cut / Teksturiranje</span
+                      ><span><span class="pill">30–45 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Blowout / Wave Finish</span
+                      ><span><span class="pill">30–45 min</span></span>
+                    </div>
+                  </div>
+                  <p class="muted mt-2">
+                    *Svaki rez uključuje konzultacije i personaliziranu
+                    preporuku njege.
+                  </p>
+                </div>
+                <div class="col-md-5">
+                  <h3 class="mb-2">Boja & zaštita</h3>
+                  <div class="list">
+                    <div class="rowx">
+                      <span>Single Tone</span
+                      ><span><span class="pill">90–120 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Highlights / Balayage</span
+                      ><span><span class="pill">150–210 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Gloss / Toner</span
+                      ><span><span class="pill">30–40 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>K18 / Olaplex zaštita</span
+                      ><span><span class="pill">20–30 min</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <h3 class="mb-2">Paketi (ritual + stil)</h3>
+                <p class="muted">
+                  Sve u jednom — nježniji pristup kosi bez suvišnih kemijskih
+                  koraka.
+                </p>
+                <ul class="list mt-3">
+                  <li>
+                    <b>Fresh Cut + Gloss</b> — blistavost i oblik bez drastične
+                    promjene; idealno između bojanja.
+                  </li>
+                  <li>
+                    <b>Color Reset + Njega</b> — osvježavanje tona uz zaštitu
+                    vlakna; za umornu, mat kosu.
+                  </li>
+                  <li>
+                    <b>Healthy Blonde</b> — blond održavanje s fokusom na
+                    elastičnost i sjaj (Olaplex/K18).
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- LOOKBOOK -->
+          <section id="lookbook" class="reveal section-alt">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Lookbook</div>
+                  <h2 class="h2">Prirodni tonovi, monokrom dojam</h2>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                <div class="col">
+                  <figure class="ph hover-lift">
+                    <img
+                      class="img-fluid anim-float"
+                      loading="lazy"
+                      src="adam-winger-FkAZqQJTbXM-unsplash.jpg"
+                      alt="Blowout Finish ili Styling & Volume"
+                    />
+                    <figcaption class="cap">
+                      Blowout Finish ili Styling & Volume
+                    </figcaption>
+                  </figure>
+                </div>
+                <div class="col">
+                  <figure class="ph hover-lift">
+                    <img
+                      class="img-fluid"
+                      loading="lazy"
+                      src="farhad-ibrahimzade-V2HDOQTJh3o-unsplash.jpg"
+                      alt="Precision Cut"
+                    />
+                    <figcaption class="cap">Precision Cut</figcaption>
+                  </figure>
+                </div>
+                <div class="col">
+                  <figure class="ph hover-lift">
+                    <img
+                      class="img-fluid anim-float"
+                      loading="lazy"
+                      src="giorgio-trovato-wSpkThmoZQc-unsplash.jpg"
+                      alt="Soft Waves / Curls"
+                    />
+                    <figcaption class="cap">Soft Waves / Curls</figcaption>
+                  </figure>
+                </div>
+                <div class="col">
+                  <figure class="ph hover-lift">
+                    <img
+                      class="img-fluid"
+                      loading="lazy"
+                      src="aditya-sethia-jWaK7wl0b1s-unsplash.jpg"
+                      alt="Cut in Progress"
+                    />
+                    <figcaption class="cap">Cut in Progress</figcaption>
+                  </figure>
+                </div>
+                <div class="col">
+                  <figure class="ph hover-lift">
+                    <img
+                      class="img-fluid anim-float"
+                      loading="lazy"
+                      src="aleksandar-andreev-XbM0XATexu8-unsplash.jpg"
+                      alt="Skin Fade"
+                    />
+                    <figcaption class="cap">Skin Fade</figcaption>
+                  </figure>
+                </div>
+                <div class="col">
+                  <figure class="ph hover-lift">
+                    <img
+                      class="img-fluid"
+                      loading="lazy"
+                      src="k8-HF19cpvy-Dw-unsplash.jpg"
+                      alt="Tone & Gloss"
+                    />
+                    <figcaption class="cap">Tone & Gloss</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- STUDIO STRIP -->
+          <section class="reveal">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Studio</div>
+                  <h2 class="h2">Trenuci iza stolca</h2>
+                </div>
+                <a class="muted" href="#lookbook">Povratak na lookbook →</a>
+              </div>
+              <div class="strip" aria-label="Studio strip">
+                <img
+                  class="img-fluid"
+                  loading="lazy"
+                  src="adam-winger-FkAZqQJTbXM-unsplash.jpg"
+                  alt="Scissors detail"
+                />
+                <img
+                  class="img-fluid"
+                  loading="lazy"
+                  src="quentin-mahe-mAW3jUP6G6E-unsplash.jpg"
+                  alt="Mixing bowl"
+                />
+                <img
+                  class="img-fluid"
+                  loading="lazy"
+                  src="baylee-gramling-a3xr2mVjT5M-unsplash.jpg"
+                  alt="Salon light"
+                />
+                <img
+                  class="img-fluid"
+                  loading="lazy"
+                  src="giselle-lazcano-TnyHlxVnyhk-unsplash.jpg"
+                  alt="Brush work"
+                />
+                <img
+                  class="img-fluid"
+                  loading="lazy"
+                  src="greg-trowman-jsuWg7IXx1k-unsplash.jpg"
+                  alt="Calm vibe"
+                />
+              </div>
+            </div>
+          </section>
+
+          <!-- TIM -->
+          <section id="tim" class="reveal">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Tim</div>
+                  <h2 class="h2">Ruke iza preciznosti</h2>
+                </div>
+              </div>
+              <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+                <div class="col">
+                  <article
+                    class="card border"
+                    style="border-color: var(--line)"
+                  >
+                    <img
+                      class="img-fluid card-img-top"
+                      loading="lazy"
+                      src="stefan-stefancik-QXevDflbl8A-unsplash.jpg"
+                      alt="Lana"
+                    />
+                    <div class="card-body py-3">
+                      <strong>Lana</strong>
+                      <div class="role">Precision Cut · Editorial</div>
+                    </div>
+                  </article>
+                </div>
+                <div class="col">
+                  <article
+                    class="card border"
+                    style="border-color: var(--line)"
+                  >
+                    <img
+                      class="img-fluid card-img-top"
+                      loading="lazy"
+                      src="joshua-rondeau-ZnHRNtwXg6Q-unsplash.jpg"
+                      alt="Marta"
+                    />
+                    <div class="card-body py-3">
+                      <strong>Marta</strong>
+                      <div class="role">Color · Balayage</div>
+                    </div>
+                  </article>
+                </div>
+                <div class="col">
+                  <article
+                    class="card border"
+                    style="border-color: var(--line)"
+                  >
+                    <img
+                      class="img-fluid card-img-top"
+                      loading="lazy"
+                      src="joao-paulo-de-souza-oliveira-E0EhlWq0iNc-unsplash.jpg"
+                      alt="Nina"
+                    />
+                    <div class="card-body py-3">
+                      <strong>Nina</strong>
+                      <div class="role">Highlights · Gloss</div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- BLOG / EDU -->
+          <section id="blog" class="reveal section-alt">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Savjeti, novosti & edukacija</div>
+                  <h2 class="h2">Njega kose, trendovi i mitovi</h2>
+                </div>
+                <!-- TEL link umjesto rezervacije -->
+                <a class="btn--accent px-3 py-2" href="tel:+385910000000"
+                  ><i class="fa-solid fa-phone"></i>&nbsp; Nazovi</a
+                >
+              </div>
+
+              <!-- članci ... (ostaje isto kao prije) -->
+              <!-- 1. red -->
+              <div class="row g-3 g-md-4">
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Njega
+                  </div>
+                  <h3 class="mb-1">Kako odrediti poroznost kose</h3>
+                  <p class="muted">
+                    Poroznost utječe na upijanje i zadržavanje vlage. Brzi test
+                    kod kuće + preporuka rutine za low/med/high porosity.
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Boja
+                  </div>
+                  <h3 class="mb-1">Što je gloss/toner?</h3>
+                  <p class="muted">
+                    Fini filter za ton i sjaj između većih bojanja. Traje 4–6
+                    tjedana i održava nijansu bez toplih odsjaja.
+                  </p>
+                </div>
+              </div>
+              <div class="line my-3"></div>
+              <!-- 2. red -->
+              <div class="row g-3 g-md-4">
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Kovrče
+                  </div>
+                  <h3 class="mb-1">Kovrče bez frizza: satin seal</h3>
+                  <p class="muted">
+                    Difuzor + satenska navlaka + uljni serum na vlažnim
+                    dlanovima — zaključavanje vlage i oblik koji drži.
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Fakt ili mit?
+                  </div>
+                  <h3 class="mb-1">Mitovi o šišanju</h3>
+                  <p class="muted">
+                    Šišanje ne ubrzava rast, ali sprječava lom i daje punoću —
+                    redovitost je važnija od dužine reza.
+                  </p>
+                </div>
+              </div>
+              <div class="line my-3"></div>
+              <!-- 3. red -->
+              <div class="row g-3 g-md-4">
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Blond
+                  </div>
+                  <h3 class="mb-1">Blond care 101</h3>
+                  <p class="muted">
+                    Hladan blond traži kiseli regenerator, UV zaštitu i
+                    minimalno topline. Kućno toniranje max 1× mjesečno uz savjet
+                    kolorista.
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Vlasište
+                  </div>
+                  <h3 class="mb-1">Zdravo vlasište = lijepa kosa</h3>
+                  <p class="muted">
+                    Mikrobiom voli nježno čišćenje 2–3× tjedno, piling 1× u 10
+                    dana i topli (ne vrući) tuš. Izbjegni teške silikone na koži
+                    glave.
+                  </p>
+                </div>
+              </div>
+              <div class="line my-3"></div>
+              <!-- 4. red -->
+              <div class="row g-3 g-md-4">
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Između termina
+                  </div>
+                  <h3 class="mb-1">Kako održati rezultat 4–6 tjedana</h3>
+                  <ul class="muted mb-0 ps-3">
+                    <li>Prva 2 dana — bez pranja i topline.</li>
+                    <li>Šampon bez sulfata 2× tjedno, suho pranje između.</li>
+                    <li>Toplinski zaštitni sprej pri svakom stiliziranju.</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="muted"
+                    style="
+                      font-size: 0.8rem;
+                      text-transform: uppercase;
+                      letter-spacing: 0.08em;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Balayage
+                  </div>
+                  <h3 class="mb-1">Njega nakon balayagea</h3>
+                  <p class="muted">
+                    Četkica s tonom na prijelazima svaka 2–3 mjeseca, kationska
+                    njega za sjaj i zaštita vlakna na svakom posvjetljivanju.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RECENZIJE -->
+          <section id="recenzije" class="reveal">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Recenzije</div>
+                  <h2 class="h2">Što klijenti kažu</h2>
+                </div>
+              </div>
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <p>
+                    “Najprecizniji bob koji sam ikad imala. Linija ostaje uredna
+                    i nakon tri tjedna.”
+                  </p>
+                  <small class="muted">— Tea M.</small>
+                  <div class="line my-3"></div>
+                  <p>
+                    “Toner je spas — Marta mi je pogodila točno onaj hladni ton
+                    bez žutila.”
+                  </p>
+                  <small class="muted">— Ivana K.</small>
+                </div>
+                <div class="col-md-6">
+                  <p>
+                    “K18 mi je vratio elastičnost nakon blajha. Osjeća se mekše,
+                    a ne teško.”
+                  </p>
+                  <small class="muted">— Petra L.</small>
+                  <div class="line my-3"></div>
+                  <p>
+                    “Salon je miran i uredan, blowout drži dva dana bez
+                    ljepljivih sprejeva.”
+                  </p>
+                  <small class="muted">— Luka R.</small>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- FAQ -->
+          <section id="faq" class="reveal">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">FAQ</div>
+                  <h2 class="h2">Česta pitanja & pravila</h2>
+                </div>
+              </div>
+              <div class="row g-3 g-md-4">
+                <div class="col-md-6">
+                  <h3 class="mb-2">Rezervacije & otkazivanje</h3>
+                  <div class="list">
+                    <div class="rowx">
+                      <span>Otkazivanje do 24h prije</span
+                      ><span><span class="pill">bez naknade</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Kasni dolazak</span
+                      ><span><span class="pill">grace 10 min</span></span>
+                    </div>
+                    <div class="rowx">
+                      <span>Ne dolazak</span
+                      ><span><span class="pill">naplaćuje se 50%</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <h3 class="mb-2">Praktično</h3>
+                  <div class="list">
+                    <div class="rowx">
+                      <span>Plaćanje</span><span>Kartice · Gotovina</span>
+                    </div>
+                    <div class="rowx">
+                      <span>Parking</span><span>Zona 1 (ulica)</span>
+                    </div>
+                    <div class="rowx">
+                      <span>Proizvodi</span><span>K18 · Olaplex · Redken</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- KONTAKT + FOOTER SOCIALS -->
+          <section id="kontakt" class="reveal" style="border-bottom: 0">
+            <div class="container-xxl">
+              <div class="head">
+                <div>
+                  <div class="muted">Kontakt</div>
+                  <h2 class="h2">Javi nam se</h2>
+                </div>
+              </div>
+              <div class="row g-3 g-md-4">
+                <div class="col-md-7">
+                  <form id="contactForm" class="d-grid gap-3">
+                    <div class="row g-3">
+                      <div class="col-sm-6">
+                        <label class="form-label">Ime i prezime</label
+                        ><input
+                          class="form-control"
+                          name="name"
+                          required
+                          placeholder="Ime Prezime"
+                        />
+                      </div>
+                      <div class="col-sm-6">
+                        <label class="form-label">Email</label
+                        ><input
+                          class="form-control"
+                          type="email"
+                          name="email"
+                          required
+                          placeholder="ime@domena.hr"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="form-label">Poruka</label
+                      ><textarea
+                        class="form-control"
+                        rows="5"
+                        name="msg"
+                        placeholder="Kako ti možemo pomoći?"
+                      ></textarea>
+                    </div>
+                    <div class="d-flex gap-2 justify-content-end">
+                      <a class="btn--ghost px-3 py-2" href="tel:+385910000000"
+                        ><i class="fa-solid fa-phone"></i>&nbsp; Nazovi</a
+                      >
+                      <button class="btn--accent px-3 py-2" type="submit">
+                        Pošalji
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-md-5">
+                  <div class="d-grid gap-3">
+                    <div>
+                      <b>Adresa</b>
+                      <div class="muted">Masarykova 7, Zagreb</div>
+                    </div>
+                    <div>
+                      <b>Telefon</b>
+                      <div class="muted">
+                        <a href="tel:+385910000000">+385 91 000 0000</a>
+                      </div>
+                    </div>
+                    <div>
+                      <b>Email</b>
+                      <div class="muted">
+                        <a href="mailto:hello@mono.hr">hello@mono.hr</a>
+                      </div>
+                    </div>
+                    <div class="line"></div>
+                    <div>
+                      <b>Radno vrijeme</b>
+                      <div class="muted">
+                        Pon–Pet 09–20 · Sub 09–15 · Ned zatvoreno
+                      </div>
+                    </div>
+                    <div class="line"></div>
+                    <div>
+                      <b>Brze poveznice</b>
+                      <div class="muted">
+                        <a href="#usluge">Usluge</a> ·
+                        <a href="#blog">Savjeti & Novosti</a> ·
+                        <a href="tel:+385910000000">Nazovi</a>
+                      </div>
+                    </div>
+
+                    <!-- Socials -->
+                    <div class="d-flex align-items-center gap-3 mt-2">
+                      <a
+                        aria-label="Facebook"
+                        href="https://facebook.com/ateliermono"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-decoration-none"
+                        ><i class="fa-brands fa-facebook fa-lg"></i
+                      ></a>
+                      <a
+                        aria-label="Instagram"
+                        href="https://instagram.com/ateliermono"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-decoration-none"
+                        ><i class="fa-brands fa-instagram fa-lg"></i
+                      ></a>
+                      <a
+                        aria-label="TikTok"
+                        href="https://tiktok.com/@ateliermono"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-decoration-none"
+                        ><i class="fa-brands fa-tiktok fa-lg"></i
+                      ></a>
+                      <a
+                        aria-label="WhatsApp"
+                        href="https://wa.me/385910000000"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-decoration-none"
+                        ><i class="fa-brands fa-whatsapp fa-lg"></i
+                      ></a>
+                      <a
+                        aria-label="Viber"
+                        href="viber://chat?number=%2B385910000000"
+                        class="text-decoration-none"
+                        ><i class="fa-brands fa-viber fa-lg"></i
+                      ></a>
+                    </div>
+
+                    <p class="muted mb-0">
+                      © <span id="year"></span> ATELIER MONO — Sva prava
+                      pridržana.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- FLOATING WhatsApp -->
+    <div class="fab">
+      <a
+        class="wa"
+        href="https://wa.me/385910000000"
+        target="_blank"
+        rel="noopener"
+        aria-label="Pošalji WhatsApp poruku"
+      >
+        <i class="fa-brands fa-whatsapp fa-lg"></i>
+      </a>
+    </div>
+
+    <div class="devby">
+      Developed by <a href="https://zonium.hr" target="_blank">ZONIUM</a>
+      <p>Slike preuzete isključivo za demo svrhu, bez komercijalne upotrebe</p>
+    </div>
+
+    <!-- JS -->
+    <script>
+      // Smooth anchors
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href");
+          if (!id || id === "#") return;
+          const el = document.querySelector(id);
+          if (!el) return;
+          e.preventDefault();
+          const y = el.getBoundingClientRect().top + scrollY - 12;
+          scrollTo({ top: y, behavior: "smooth" });
+        });
+      });
+
+      // Reveal
+      const io = new IntersectionObserver(
+        (ents) => {
+          ents.forEach((ent) => {
+            if (ent.isIntersecting) {
+              ent.target.classList.add("in");
+              io.unobserve(ent.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+      // Active link on scroll (sidenav)
+      const sLinks = [...document.querySelectorAll(".sidenav a")];
+      const sSections = sLinks
+        .map((a) => document.querySelector(a.getAttribute("href")))
+        .filter(Boolean);
+      const spy = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              const id = "#" + e.target.id;
+              sLinks.forEach((l) =>
+                l.classList.toggle("active", l.getAttribute("href") === id)
+              );
+            }
+          });
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0.01 }
+      );
+      sSections.forEach((sec) => spy.observe(sec));
+
+      // Year
+      (function () {
+        var y = document.getElementById("year");
+        if (y) y.textContent = new Date().getFullYear();
+      })();
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
